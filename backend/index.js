@@ -3,7 +3,19 @@ const express = require('express');
 const cors = require('cors'); 
 const app = express();
 
-const port = process.env.PORT || 3001; 
+// --- 3. KẾT NỐI DATABASE (MongoDB Atlas) ---
+// (Phải đặt TRƯỚC khi định nghĩa API)
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected Successfully!"))
+  .catch(err => console.error("MongoDB Connection Error:", err));
+
+// --- 4. CẤU HÌNH MIDDLEWARE (Các "trạm gác") ---
+
+// 4a. Cấu hình CORS (Ai được phép gõ cửa)
+const allowedOrigins = [
+  'https://skillmatchs.vercel.app', // Khách Production (Vercel)
+  'http://localhost:3000'        // Khách Development (máy bạn)
+];
 
 // QUAN TRỌNG: Dạy Back-end "tin tưởng" Front-end
 // Thay 'httpsS://skill-match.vercel.app' bằng link Vercel của bạn
