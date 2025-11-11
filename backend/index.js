@@ -1,10 +1,15 @@
 
-const express = require('express');
-const cors = require('cors'); 
-const app = express();
 
-// --- 3. KẾT NỐI DATABASE (MongoDB Atlas) ---
-// (Phải đặt TRƯỚC khi định nghĩa API)
+
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose'); 
+require('dotenv').config(); 
+const authRoutes = require('./routes/auth.js');
+
+const app = express();
+const port = process.env.PORT || 3001;
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected Successfully!"))
   .catch(err => console.error("MongoDB Connection Error:", err));
@@ -17,26 +22,28 @@ const allowedOrigins = [
   'http://localhost:3000'        // Khách Development (máy bạn)
 ];
 
-// QUAN TRỌNG: Dạy Back-end "tin tưởng" Front-end
-// Thay 'httpsS://skill-match.vercel.app' bằng link Vercel của bạn
 app.use(cors({
-  origin: 'https://skillmatchs.vercel.app/' 
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true); // Cho phép vào
+    } else {
+      callback(new Error('Not allowed by CORS')); // Chặn lại
+    }
+  }
 }));
 
-// Dạy Back-end hiểu được dữ liệu JSON (cho các API POST sau này)
 app.use(express.json()); 
 
-// API "Hello World" của bạn
 app.get('/api', (req, res) => {
   res.json({ message: "Hello, World! This is the SkillMatch API." });
 });
+app.use('/api/auth', authRoutes);
+// TODO: Thêm API cho Đăng ký (Register) và Đăng nhập (Login) ở đây
+// app.post('/api/auth/register', ...);
+// app.post('/api/auth/login', ...);
 
-// ... (Tất cả các API khác của bạn sẽ nằm ở đây) ...
-
-// Khởi động server
 app.listen(port, () => {
   console.log(`Backend server is running on port ${port}`);
 });
 
-// Dùng cho việc test (sẽ cần sau)
 module.exports = app;

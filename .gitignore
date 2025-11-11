@@ -3,3 +3,4 @@ node_modules/
 
 # Bỏ qua các file môi trường
 .env
+.env*
