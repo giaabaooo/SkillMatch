@@ -14,9 +14,12 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected Successfully!"))
   .catch(err => console.error("MongoDB Connection Error:", err));
 
+// --- 4. CẤU HÌNH MIDDLEWARE (Các "trạm gác") ---
+
+// 4a. Cấu hình CORS (Ai được phép gõ cửa)
 const allowedOrigins = [
   'https://skillmatchs.vercel.app', // Khách Production (Vercel)
-  'http://localhost:5173'         // Khách Development (máy bạn)
+  'http://localhost:3000'        // Khách Development (máy bạn)
 ];
 
 app.use(cors({
