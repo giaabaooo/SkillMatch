@@ -1,4 +1,4 @@
-// File: frontend/src/pages/LoginPage.jsx (Code bằng Chakra UI)
+// File: frontend/src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Flex, Heading, Text, Button, Link, FormControl, FormLabel, Input, Alert, AlertIcon } from '@chakra-ui/react';
@@ -14,8 +14,6 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
-    // DÙNG BIẾN MÔI TRƯỜNG CỦA CRA
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
     try {
@@ -32,7 +30,6 @@ export default function LoginPage() {
       localStorage.setItem('skillmatch_token', data.token);
       setLoading(false);
       navigate('/dashboard');
-
     } catch (err) {
       setLoading(false);
       setError(err.message);
@@ -48,47 +45,25 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit}>
           <FormControl isRequired mb={4}>
             <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              bg="gray.700"
-              border="none"
-              _focus={{ ring: '2px', ringColor: 'blue.500' }}
-            />
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
           </FormControl>
           <FormControl isRequired mb={6}>
             <FormLabel>Mật khẩu</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              bg="gray.700"
-              border="none"
-              _focus={{ ring: '2px', ringColor: 'blue.500' }}
-            />
+            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
           </FormControl>
-          
           {error && (
             <Alert status="error" mb={4} rounded="md">
               <AlertIcon />
               {error}
             </Alert>
           )}
-
-          <Button
-            type="submit"
-            colorScheme="blue"
-            w="full"
-            py={6}
-            isLoading={loading}
-          >
+          <Button type="submit" colorScheme="blue" w="full" py={6} isLoading={loading}>
             {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </Button>
         </form>
         <Text textAlign="center" color="gray.400" mt={6}>
           Chưa có tài khoản?{' '}
-          <Link as={RouterLink} to="/register" color="blue.400" fontWeight="bold">
+          <Link as={RouterLink} to="/register-select" color="blue.400" fontWeight="bold">
             Tạo tài khoản
           </Link>
         </Text>

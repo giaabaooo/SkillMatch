@@ -1,9 +1,10 @@
-// File: frontend/src/pages/RegisterPage.jsx
+// File: frontend/src/pages/RegisterBusinessPage.jsx
 import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Flex, Heading, Text, Button, Link, FormControl, FormLabel, Input, Alert, AlertIcon } from '@chakra-ui/react';
 
-export default function RegisterPage() {
+export default function RegisterBusinessPage() {
+  const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -17,17 +18,12 @@ export default function RegisterPage() {
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Đăng ký thất bại');
-      }
-      setLoading(false);
-      navigate('/login');
+      // TẠM THỜI: Chúng ta chưa code API này, nên sẽ báo lỗi (nhưng không crash app)
+      // const response = await fetch(`${apiBaseUrl}/api/auth/register-business`, { ... });
+      
+      // Giả lập lỗi "Coming Soon"
+      throw new Error("Tính năng Đăng ký Doanh nghiệp đang được phát triển!");
+
     } catch (err) {
       setLoading(false);
       setError(err.message);
@@ -38,29 +34,20 @@ export default function RegisterPage() {
     <Flex minH="100vh" bg="gray.900" color="white" align="center" justify="center">
       <Box bg="gray.800" p={8} rounded="lg" shadow="lg" w="full" maxW="md">
         <Heading as="h2" size="xl" textAlign="center" mb={6}>
-          Đăng ký (Ứng viên)
+          Đăng ký (Doanh nghiệp)
         </Heading>
         <form onSubmit={handleSubmit}>
           <FormControl isRequired mb={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              bg="gray.700" border="none"
-              _focus={{ ring: '2px', ringColor: 'blue.500' }}
-            />
+            <FormLabel>Tên Công ty</FormLabel>
+            <Input type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
+          </FormControl>
+          <FormControl isRequired mb={4}>
+            <FormLabel>Email Công việc</FormLabel>
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
           </FormControl>
           <FormControl isRequired mb={6}>
-            <FormLabel>Mật khẩu (tối thiểu 6 ký tự)</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              bg="gray.700" border="none"
-              _focus={{ ring: '2px', ringColor: 'blue.500' }}
-              minLength={6}
-            />
+            <FormLabel>Mật khẩu</FormLabel>
+            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} minLength={6} />
           </FormControl>
           {error && (
             <Alert status="error" mb={4} rounded="md">
@@ -69,7 +56,7 @@ export default function RegisterPage() {
             </Alert>
           )}
           <Button type="submit" colorScheme="blue" w="full" py={6} isLoading={loading}>
-            {loading ? 'Đang xử lý...' : 'Đăng ký'}
+            Tạo tài khoản Doanh nghiệp
           </Button>
         </form>
         <Text textAlign="center" color="gray.400" mt={6}>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Box, Flex, Heading, Text, Button, Icon } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { FiTool } from 'react-icons/fi'; // Import 1 icon
+import { FiTool } from 'react-icons/fi';
 
 export default function ComingSoonPage() {
   return (
