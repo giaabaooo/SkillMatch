@@ -13,6 +13,8 @@ import ComingSoonPage from './pages/ComingSoonPage';
 import RegisterSelectPage from './pages/RegisterSelectPage'; // <-- Import file mới
 import RegisterBusinessPage from './pages/RegisterBusinessPage'; // <-- Import file mới
 import BusinessDashboardPage from './pages/BusinessDashboardPage';
+import BusinessLayout from './pages/BusinessLayout';
+import CreateTestPage from './pages/CreateTestPage';
 
 // 2. CODE CẤU HÌNH
 const config = {
@@ -39,10 +41,13 @@ root.render(
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-business" element={<RegisterBusinessPage />} />
 
-          <Route path="/register-business" element={<RegisterBusinessPage />} />
-          <Route path="/business/dashboard" element={<BusinessDashboardPage />} /> {/* Nhà Mới */}
-          <Route path="/business/tests" element={<ComingSoonPage />} />
-          <Route path="/business/candidates" element={<ComingSoonPage />} />
+          <Route path="/business" element={<BusinessLayout />}>
+            <Route path="dashboard" element={<BusinessDashboardPage />} />
+            <Route path="tests" element={<ComingSoonPage />} /> {/* Trang "My Tests" (chưa code) */}
+            <Route path="tests/new" element={<CreateTestPage />} /> {/* Trang "Tạo Test" */}
+            <Route path="candidates" element={<ComingSoonPage />} /> {/* Trang "Candidates" (chưa code) */}
+            <Route path="settings" element={<ComingSoonPage />} />
+          </Route>
 
           {/* Luồng "Coming Soon" */}
           <Route path="/my-skill" element={<ComingSoonPage />} />

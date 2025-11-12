@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Flex, Heading, Text, Button, Link, FormControl, FormLabel, Input, Alert, AlertIcon } from '@chakra-ui/react';
+import { jwtDecode } from 'jwt-decode';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -26,10 +27,21 @@ export default function LoginPage() {
       if (!response.ok) {
         throw new Error(data.message || 'Đăng nhập thất bại');
       }
-      
+
       localStorage.setItem('skillmatch_token', data.token);
+
+      // 2. "ĐỌC" VÉ
+      const decodedToken = jwtDecode(data.token);
+      const userRole = decodedToken.user.role; // Đọc vai trò (role)
+
       setLoading(false);
-      navigate('/dashboard');
+
+      // 3. Phân luồng
+      if (userRole === 'business') {
+        navigate('/business/dashboard'); // Về nhà Doanh nghiệp
+      } else {
+        navigate('/dashboard'); // Về nhà Ứng viên
+      }
     } catch (err) {
       setLoading(false);
       setError(err.message);

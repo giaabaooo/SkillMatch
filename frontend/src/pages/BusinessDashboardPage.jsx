@@ -1,64 +1,91 @@
-// File: frontend/src/pages/BusinessDashboardPage.jsx
+// File: frontend/src/pages/BusinessDashboardIndexPage.jsx
 import React from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Flex, Heading, Text, Button, Link, SimpleGrid } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+  Box, Flex, Heading, Text, Button, Link,
+  Table, Thead, Tbody, Tr, Th, Td, TableContainer,
+  Badge,
+  SimpleGrid
+} from '@chakra-ui/react';
 
-export default function BusinessDashboardPage() {
-  const navigate = useNavigate();
+export default function BusinessDashboardIndexPage() {
+  // Dữ liệu giả (dummy data)
+  const assessments = [
+    { name: 'Nguyễn Văn A', test: 'Junior Marketer Test', score: '85%', status: 'OK' },
+    { name: 'Trần Thị B', test: 'Junior Marketer Test', score: '92%', status: 'OK' },
+    { name: 'Lê Văn C', test: 'Junior Marketer Test', score: '71%', status: 'Flagged' },
+  ];
 
-  const handleLogout = () => {
-    localStorage.removeItem('skillmatch_token');
-    navigate('/'); // Về Trang chủ
-  };
-
-  // Giao diện này sẽ khác với Dashboard của Ứng viên
   return (
-    <Flex h="100vh" bg="gray.900" color="white">
-      {/* 1. Sidebar Doanh nghiệp */}
-      <Flex as="aside" w="64" bg="gray.800" p={6} shadow="lg" direction="column">
-        <Heading as="h1" size="lg" mb={8}>SkillMatch (Business)</Heading>
-        <Flex as="nav" direction="column" flex={1} gap={2}>
-          <Link as={RouterLink} to="/business/dashboard" bg="blue.600" color="white" p={3} rounded="lg" fontWeight="bold">
-            Dashboard
-          </Link>
-          <Link as={RouterLink} to="/business/tests" p={3} rounded="lg" _hover={{ bg: 'gray.700' }}>
-            Quản lý Bài Test
-          </Link>
-          <Link as={RouterLink} to="/business/candidates" p={3} rounded="lg" _hover={{ bg: 'gray.700' }}>
-            Quản lý Ứng viên
-          </Link>
-          <Link as={RouterLink} to="/settings" p={3} rounded="lg" _hover={{ bg: 'gray.700' }}>
-            Cài đặt
-          </Link>
+    <>
+      {/* --- Header (Giờ nằm riêng) --- */}
+      <Box as="header" bg="white" shadow="sm" p={6}>
+        <Flex justify="space-between" align="center">
+          <Heading as="h2" size="lg">
+            Welcome, [Company Name]!
+          </Heading>
+          {/* Nút này sẽ trỏ đến trang "Create" mới */}
+          <Button as={RouterLink} to="/business/tests/new" colorScheme="blue" size="md">
+            Create New Test
+          </Button>
         </Flex>
-        <Button onClick={handleLogout} colorScheme="red" p={3} rounded="lg" fontWeight="bold">
-          Đăng xuất
-        </Button>
-      </Flex>
+      </Box>
 
-      {/* 2. Main Content */}
-      <Flex as="main" flex={1} direction="column">
-        <Box as="header" bg="gray.800" shadow="md" p={6}>
-          <Heading as="h2" size="lg">Chào mừng, [Tên Công ty]!</Heading>
-        </Box>
-        <Box flex={1} p={8} overflowY="auto">
-          <Heading as="h3" size="xl" mb={6}>Tổng quan Doanh nghiệp</Heading>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-            <Box bg="gray.800" p={6} rounded="lg" shadow="lg">
-              <Text fontSize="lg" fontWeight="semibold" color="gray.400">Bài Test Đang Mở</Text>
-              <Text fontSize="4xl" fontWeight="bold" mt={2}>2</Text>
-            </Box>
-            <Box bg="gray.800" p={6} rounded="lg" shadow="lg">
-              <Text fontSize="lg" fontWeight="semibold" color="gray.400">Ứng viên Đã Nộp</Text>
-              <Text fontSize="4xl" fontWeight="bold" mt={2}>120</Text>
-            </Box>
-            <Box bg="gray.800" p={6} rounded="lg" shadow="lg">
-              <Text fontSize="lg" fontWeight="semibold" color="gray.400">Gói (Plan)</Text>
-              <Text fontSize="4xl" fontWeight="bold" mt={2}>Premium</Text>
-            </Box>
-          </SimpleGrid>
-        </Box>
-      </Flex>
-    </Flex>
+      {/* --- Main Content (Chỉ nội dung) --- */}
+      <Box p={8}>
+        {/* --- PROMPT: "3-column grid of large statistic cards" --- */}
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mb={8}>
+          <Box bg="white" p={6} rounded="lg" shadow="md">
+            <Text fontSize="md" fontWeight="semibold" color="gray.500">Active Assessments</Text>
+            <Text fontSize="4xl" fontWeight="bold" mt={2} color="blue.600">8</Text>
+          </Box>
+          <Box bg="white" p={6} rounded="lg" shadow="md">
+            <Text fontSize="md" fontWeight="semibold" color="gray.500">Total Candidates</Text>
+            <Text fontSize="4xl" fontWeight="bold" mt={2}>256</Text>
+          </Box>
+          <Box bg="white" p={6} rounded="lg" shadow="md">
+            <Text fontSize="md" fontWeight="semibold" color="gray.500">Candidates Flagged</Text>
+            <Text fontSize="4xl" fontWeight="bold" mt={2} color="red.500">14</Text>
+          </Box>
+        </SimpleGrid>
+
+        {/* --- PROMPT: "a large data grid (table)" --- */}
+        <Heading as="h3" size="lg" mb={4}>
+          Recently Completed Assessments
+        </Heading>
+        <TableContainer bg="white" rounded="lg" shadow="md">
+          <Table variant="simple">
+            <Thead bg="gray.50">
+              <Tr>
+                <Th>Candidate Name</Th>
+                <Th>Test Name</Th>
+                <Th>Score</Th>
+                <Th>Anti-Cheat Status</Th>
+                <Th>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {assessments.map((item, index) => (
+                <Tr key={index} _hover={{ bg: 'gray.50' }}>
+                  <Td>{item.name}</Td>
+                  <Td>{item.test}</Td>
+                  <Td fontWeight="bold">{item.score}</Td>
+                  <Td>
+                    <Badge colorScheme={item.status === 'OK' ? 'green' : 'red'}>
+                      {item.status}
+                    </Badge>
+                  </Td>
+                  <Td>
+                    <Button as={RouterLink} to={`/business/candidates/view`} variant="link" colorScheme="blue">
+                      View Report
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </>
   );
 }

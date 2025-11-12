@@ -143,11 +143,11 @@ router.post(
 
       // 5. (Nâng cao) Kiểm tra xem email này có phải là email cá nhân không
       // (Chúng ta sẽ KHÔNG cho phép @gmail.com, @yahoo.com đăng ký business)
-      const personalDomains = ['gmail.com', 'yahoo.com', 'outlook.com'];
-      const domain = email.split('@')[1];
-      if (personalDomains.includes(domain)) {
-        return res.status(400).json({ message: 'Vui lòng sử dụng email công ty (Không dùng Gmail, Yahoo...)' });
-      }
+      // const personalDomains = ['gmail.com', 'yahoo.com', 'outlook.com'];
+      // const domain = email.split('@')[1];
+      // if (personalDomains.includes(domain)) {
+      //   return res.status(400).json({ message: 'Vui lòng sử dụng email công ty (Không dùng Gmail, Yahoo...)' });
+      // }
 
       // 6. Tạo tài khoản Business mới
       business = new Business({

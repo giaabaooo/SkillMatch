@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose'); 
 require('dotenv').config(); 
 const authRoutes = require('./routes/auth.js');
-
+const assessmentRoutes = require('./routes/assessment.js');
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -30,15 +30,13 @@ app.use(cors({
   }
 }));
 
-app.use(express.json()); 
+
 
 app.get('/api', (req, res) => {
   res.json({ message: "Hello, World! This is the SkillMatch API." });
 });
-app.use('/api/auth', authRoutes);
-// TODO: Thêm API cho Đăng ký (Register) và Đăng nhập (Login) ở đây
-// app.post('/api/auth/register', ...);
-// app.post('/api/auth/login', ...);
+app.use('/api/auth', express.json(), authRoutes);
+app.use('/api/tests', assessmentRoutes);
 
 app.listen(port, () => {
   console.log(`Backend server is running on port ${port}`);
