@@ -1,7 +1,7 @@
 // File: frontend/src/pages/DashboardPage.jsx
 import React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Flex, Heading, Text, Button, Link, SimpleGrid } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, Link,  SimpleGrid } from '@chakra-ui/react';
 
 export default function DashboardPage() {
   const navigate = useNavigate();

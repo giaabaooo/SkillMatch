@@ -1,6 +1,6 @@
 // File: frontend/src/pages/ComingSoonPage.jsx
 import React from 'react';
-import { Box, Flex, Heading, Text, Button, Icon } from '@chakra-ui/react';
+import { Flex, Heading, Text, Button, Icon } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiTool } from 'react-icons/fi';
 
