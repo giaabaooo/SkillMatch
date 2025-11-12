@@ -4,6 +4,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Flex, Heading, Text, Button, Link, FormControl, FormLabel, Input, Alert, AlertIcon } from '@chakra-ui/react';
 
 export default function RegisterBusinessPage() {
+  const [fullName, setFullName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,9 +21,23 @@ export default function RegisterBusinessPage() {
     try {
       // TẠM THỜI: Chúng ta chưa code API này, nên sẽ báo lỗi (nhưng không crash app)
       // const response = await fetch(`${apiBaseUrl}/api/auth/register-business`, { ... });
-      
+
       // Giả lập lỗi "Coming Soon"
-      throw new Error("Tính năng Đăng ký Doanh nghiệp đang được phát triển!");
+      const response = await fetch(`${apiBaseUrl}/api/auth/register-business`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // Gửi cả 3 trường
+        body: JSON.stringify({ fullName, email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Đăng ký thất bại');
+      }
+
+      // Đăng ký thành công -> Lưu token và vào Dashboard
+      localStorage.setItem('skillmatch_token', data.token);
+      setLoading(false);
+      navigate('/dashboard');
 
     } catch (err) {
       setLoading(false);
@@ -42,22 +57,33 @@ export default function RegisterBusinessPage() {
             <Input type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
           </FormControl>
           <FormControl isRequired mb={4}>
-            <FormLabel>Email Công việc</FormLabel>
-            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
+            <FormLabel>Họ và Tên</FormLabel>
+            <Input
+              type="text"
+              value={fullName} // <-- Thêm State
+              onChange={(e) => setFullName(e.target.value)} // <-- Thêm State
+              bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }}
+            />
           </FormControl>
-          <FormControl isRequired mb={6}>
-            <FormLabel>Mật khẩu</FormLabel>
-            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} minLength={6} />
-          </FormControl>
-          {error && (
-            <Alert status="error" mb={4} rounded="md">
-              <AlertIcon />
-              {error}
-            </Alert>
-          )}
-          <Button type="submit" colorScheme="blue" w="full" py={6} isLoading={loading}>
-            Tạo tài khoản Doanh nghiệp
-          </Button>
+          
+            <FormControl isRequired mb={4}>
+              <FormLabel>Email Công việc</FormLabel>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} />
+            </FormControl>
+            
+            <FormControl isRequired mb={6}>
+              <FormLabel>Mật khẩu</FormLabel>
+              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} bg="gray.700" border="none" _focus={{ ring: '2px', ringColor: 'blue.500' }} minLength={6} />
+            </FormControl>
+            {error && (
+              <Alert status="error" mb={4} rounded="md">
+                <AlertIcon />
+                {error}
+              </Alert>
+            )}
+            <Button type="submit" colorScheme="blue" w="full" py={6} isLoading={loading}>
+              Tạo tài khoản Doanh nghiệp
+            </Button>
         </form>
         <Text textAlign="center" color="gray.400" mt={6}>
           Đã có tài khoản?{' '}

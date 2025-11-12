@@ -1,7 +1,7 @@
 // File: frontend/src/pages/RegisterSelectPage.jsx
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Flex, Heading, Text, Link, SimpleGrid, Icon } from '@chakra-ui/react';
+import {  Flex, Heading, Text,  SimpleGrid, Icon } from '@chakra-ui/react';
 import { FiUser, FiBriefcase } from 'react-icons/fi';
 
 export default function RegisterSelectPage() {
@@ -47,7 +47,7 @@ export default function RegisterSelectPage() {
         </Flex>
         <Flex
           as={RouterLink}
-          to="/register-business"
+          to="/business/dashboard"
           direction="column"
           align="center"
           justify="center"
